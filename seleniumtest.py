@@ -1,3 +1,8 @@
+"""
+before running this make sure to add chromedriver.exe to your PATH variable or you will run into error"
+"""
+
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
