@@ -4,6 +4,7 @@ import pyaudio  #pip install pyaudio
 import speech_recognition as sr #pip install speechRecognition
 import datetime
 import os
+
 engine = pyttsx3.init()
 
 voices = engine.getProperty('voices')       #saari voices ki ek list aati hai
@@ -17,7 +18,7 @@ day =  datetime. datetime.today().strftime('%A')
 hour=str(datetime.datetime.now().hour)
 minute=str(datetime.datetime.now().minute)
 
-
+############################################ my functions
 
 user=input("Enter your name ")
 
@@ -49,6 +50,7 @@ def listenTo():
         print("Could you repeat that?")
         return "none"  
     return query
+##################################### Actual Program
 
 if __name__ == "__main__":
     intro()
