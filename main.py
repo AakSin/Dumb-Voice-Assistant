@@ -4,8 +4,9 @@ import pyaudio  #pip install pyaudio
 import speech_recognition as sr #pip install speechRecognition
 import datetime
 import os
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium import webdriver #pip install selenium
+from selenium.webdriver.common.keys import Keys #download chromedriver first and update your chrome to version 76
+import time
 
 
 engine = pyttsx3.init()
@@ -31,9 +32,9 @@ def speak(inp):
 def intro():
     global user
     user=input("Enter your name ")
-    speak("Hi " +user+ "I am new gen bot")
+    speak(f"Hi {user} I am new gen bot")
     
-    speak("its " +hour+" "+minute+" right now and its a "+ day )
+    speak(f"its {hour} {minute} right now and its a {day}" )
 
 def listenTo():
     #for taking microphone input
@@ -56,13 +57,19 @@ def listenTo():
     return query
 
 def search_google(query):
+    query=query.replace("google ","")
     browser = webdriver.Chrome()
     browser.get('http://www.google.com')
     search = browser.find_element_by_name('q')
     search.send_keys(query)
-    search.send_keys(Keys.RETURN)
+    search.send_keys(Keys.ENTER)
     res=browser.find_element_by_class_name("Z0LcW")
     speak(res.text)
+def play_youtube(query):
+    query=query.replace("youtube ","")
+    browser = webdriver.Chrome()
+    browser.get(f"https://www.youtube.com/results?search_query={query}")
+    res=browser.find_element_by_id("video-title").click()
 
 ##################################### Actual Program
 
@@ -71,6 +78,7 @@ if __name__ == "__main__":
     #intro()
     query=listenTo().lower()
     if "google" in query:
-        query=query.replace("google ","")
         search_google(query)
+    if "youtube" in query:
+        play_youtube(query)
     os.system("pause")
