@@ -2,3 +2,4 @@ pyttsx3
 pyaudio
 speechRecognition
 selenium
+webdriver_manager

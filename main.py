@@ -15,14 +15,13 @@ from selenium import webdriver #pip install selenium
 from selenium.webdriver.common.keys import Keys #download chromedriver first and update your chrome to version 76
 import time
 import json
+from webdriver_manager.chrome import ChromeDriverManager
 
 js=open("pw.json")
 base=json.load(js)
 
 engine = pyttsx3.init()
-
 voices = engine.getProperty('voices')       #saari voices ki ek list aati hai
-
 engine.setProperty("voice",voices[1].id)
 rate = engine.getProperty('rate')   # getting details of current speaking rate
 engine.setProperty('rate', 175)     # setting up new voice rate
@@ -67,7 +66,7 @@ def listenTo():
 
 def search_google(query):
     query=query.replace("google ","")
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome(ChromeDriverManager().install())
     browser.get('http://www.google.com')
     search = browser.find_element_by_name('q')
     search.send_keys(query)
@@ -84,7 +83,7 @@ def search_google(query):
         pass
 def play_youtube(query):
     query=query.replace("youtube ","")
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome(ChromeDriverManager().install())
     browser.get(f"https://www.youtube.com/results?search_query={query}")
     for i in browser.find_elements_by_id("video-title"):
         if "ytd-promoted-video-renderer" in i.get_attribute("class"):
@@ -97,7 +96,7 @@ def play_youtube(query):
 def topReddit(query):
     query=query.replace("reddit ","")
     query=query.replace(" ","")
-    browser = webdriver.Chrome()
+    browser = webdriver.Chrome(ChromeDriverManager().install())
     browser.get(f"https://www.reddit.com/r/{query}/top/?t=week")
 
 ##################################### Actual Program
