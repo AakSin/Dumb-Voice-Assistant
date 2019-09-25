@@ -14,7 +14,10 @@ import os
 from selenium import webdriver #pip install selenium
 from selenium.webdriver.common.keys import Keys #download chromedriver first and update your chrome to version 76
 import time
+import json
 
+js=open("pw.json")
+base=json.load(js)
 
 engine = pyttsx3.init()
 
@@ -104,11 +107,11 @@ if __name__ == "__main__":
     #intro()
     while True:    
         query=listenTo().lower()
-        if "google" in query:
+        if "google"==query[:6]:
             search_google(query)
-        if "youtube" in query:
+        if "youtube"==query[:7]:
             play_youtube(query)
-        if "reddit" in query:
+        if "reddit"==query[:6]:
             topReddit(query)
         if query=="exit":   
             exit()
