@@ -69,7 +69,16 @@ def play_youtube(query):
     query=query.replace("youtube ","")
     browser = webdriver.Chrome()
     browser.get(f"https://www.youtube.com/results?search_query={query}")
-    res=browser.find_element_by_id("video-title").click()
+    for i in browser.find_elements_by_id("video-title"):
+        if "ytd-promoted-video-renderer" in i.get_attribute("class"):
+            print(i.get_attribute("class"))
+            continue
+        else:
+            res=i
+            break
+    res.click()
+def topReddit(query):
+    pass
 
 ##################################### Actual Program
 
@@ -81,4 +90,6 @@ if __name__ == "__main__":
         search_google(query)
     if "youtube" in query:
         play_youtube(query)
+    if "reddit" in query:
+        pass
     os.system("pause")

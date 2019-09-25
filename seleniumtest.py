@@ -15,4 +15,4 @@ def search_google(query):
     while True:
         pass
     
-search_google('how to build a voice assistant in python')
+search_google("test123")
