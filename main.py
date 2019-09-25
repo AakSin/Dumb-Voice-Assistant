@@ -4,6 +4,9 @@ import pyaudio  #pip install pyaudio
 import speech_recognition as sr #pip install speechRecognition
 import datetime
 import os
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
 
 engine = pyttsx3.init()
 
@@ -20,15 +23,15 @@ minute=str(datetime.datetime.now().minute)
 
 ############################################ my functions
 
-user=input("Enter your name ")
-
 
 def speak(inp):
     engine.say(inp)
     engine.runAndWait() #blocks pyttsx waale functions till previous functions are complete
 
 def intro():
-    speak("Hi " +user+ "I am Kanye Best")
+    global user
+    user=input("Enter your name ")
+    speak("Hi " +user+ "I am new gen bot")
     
     speak("its " +hour+" "+minute+" right now and its a "+ day )
 
@@ -38,7 +41,8 @@ def listenTo():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.energy_threshold = 700
+        r.energy_threshold = 900
+        r.pause_threshold=0.5
         audio = r.listen(source)
 
     try:
@@ -50,9 +54,23 @@ def listenTo():
         print("Could you repeat that?")
         return "none"  
     return query
+
+def search_google(query):
+    browser = webdriver.Chrome()
+    browser.get('http://www.google.com')
+    search = browser.find_element_by_name('q')
+    search.send_keys(query)
+    search.send_keys(Keys.RETURN)
+    res=browser.find_element_by_class_name("Z0LcW")
+    speak(res.text)
+
 ##################################### Actual Program
 
 if __name__ == "__main__":
-    intro()
+    
+    #intro()
     query=listenTo().lower()
+    if "google" in query:
+        query=query.replace("google ","")
+        search_google(query)
     os.system("pause")
