@@ -1,4 +1,11 @@
-############################################### setup etc. for voice
+############################################### setup etc. for voice, SpeechRecognition
+"""
+before running this file make sure to go to command prompt 
+open it in this directory
+and then type "pip install -r requirements.txt"
+it will automatically install all the dependencies
+"""
+
 import pyttsx3  #pip install pyttsx3
 import pyaudio  #pip install pyaudio
 import speech_recognition as sr #pip install speechRecognition
@@ -15,7 +22,7 @@ voices = engine.getProperty('voices')       #saari voices ki ek list aati hai
 
 engine.setProperty("voice",voices[1].id)
 rate = engine.getProperty('rate')   # getting details of current speaking rate
-engine.setProperty('rate', 150)     # setting up new voice rate
+engine.setProperty('rate', 175)     # setting up new voice rate
 
 ############################################# datetime ka setup
 day =  datetime. datetime.today().strftime('%A')
@@ -38,7 +45,6 @@ def intro():
 
 def listenTo():
     #for taking microphone input
-
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
@@ -53,7 +59,7 @@ def listenTo():
 
     except : 
         print("Could you repeat that?")
-        return "none"  
+        return "none" 
     return query
 
 def search_google(query):
@@ -63,8 +69,16 @@ def search_google(query):
     search = browser.find_element_by_name('q')
     search.send_keys(query)
     search.send_keys(Keys.ENTER)
-    res=browser.find_element_by_class_name("Z0LcW")
-    speak(res.text)
+    try:
+        res=browser.find_element_by_class_name("Z0LcW")
+        speak(res.text)
+    except:
+        pass
+    try:
+        res=browser.find_element_by_class_name("e24Kjd")
+        speak(res.text)
+    except:
+        pass
 def play_youtube(query):
     query=query.replace("youtube ","")
     browser = webdriver.Chrome()
@@ -78,18 +92,24 @@ def play_youtube(query):
             break
     res.click()
 def topReddit(query):
-    pass
+    query=query.replace("reddit ","")
+    query=query.replace(" ","")
+    browser = webdriver.Chrome()
+    browser.get(f"https://www.reddit.com/r/{query}/top/?t=week")
 
 ##################################### Actual Program
 
 if __name__ == "__main__":
     
     #intro()
-    query=listenTo().lower()
-    if "google" in query:
-        search_google(query)
-    if "youtube" in query:
-        play_youtube(query)
-    if "reddit" in query:
-        pass
-    os.system("pause")
+    while True:    
+        query=listenTo().lower()
+        if "google" in query:
+            search_google(query)
+        if "youtube" in query:
+            play_youtube(query)
+        if "reddit" in query:
+            topReddit(query)
+        if query=="exit":   
+            exit()
+        os.system("pause")

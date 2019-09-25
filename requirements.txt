@@ -2,3 +2,6 @@ pyttsx3
 pyaudio
 speechRecognition
 selenium
+praw
+lxml
+requests
