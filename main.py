@@ -34,6 +34,8 @@ minute=str(datetime.datetime.now().minute)
 ############################################ my functions
 lists={"shopping list":[],"wishlist":[]}
 l_lists=list(lists.keys())
+l1=l_lists[0]
+l2=l_lists[1]
 def speak(inp):
     engine.say(inp)
     engine.runAndWait() #blocks pyttsx waale functions till previous functions are complete
@@ -102,12 +104,46 @@ def topReddit(query):
 def addList(query):
     query=query.replace("add ","")
     query=query.replace(" to","")
-    if query[-13::]==l_lists[0]:
-        query=query.replace(l_lists[0],"")
-        lists[l_lists[0]].append(query)
-        print(lists)
+    if query[-13::]==l1:
+        query=query.replace(l1,"")
+        lists[l1].append(query)
+        print(lists[l1])
+        speak(f"items in {l1} are ")
+        for i in lists[l1]:
+            speak(i)
+        
+    elif query[-8::]==l2:
+        query=query.replace(l2,"")
+        lists[l2].append(query)
+        print(lists[l2])
+        speak(f"items in {l2} are ")
+        for i in lists[l2]:
+            speak(i)
+        
     else:
-        print("error")
+        print("error :  that list can't be found")
+def removeList(query):
+    query=query.replace("remove ","")
+    query=query.replace(" from","")
+   
+    if query[-13::]==l1:
+        query=query.replace(l1,"")
+        lists[l1].remove(query)
+        print(lists[l1])
+        speak(f"items in {l1} are ")
+        for i in lists[l1]:
+            speak(i)
+        
+    elif query[-8::]==l2:
+        query=query.replace(l2,"")
+        lists[l2].remove(query)
+        print(lists[l2])
+        speak(f"items in {l2} are ")
+        for i in lists[l2]:
+            speak(i)
+        
+    else:
+        print("error :  that list can't be found")
         
 ##################################### Actual Program
 
@@ -115,8 +151,8 @@ if __name__ == "__main__":
     
     #intro()
     while True:    
-        query=listenTo().lower()
-        #query=input()
+        #query=listenTo().lower()
+        query=input()
         if "google"==query[:6]:
             search_google(query)
         elif "youtube"==query[:7]:
@@ -125,6 +161,8 @@ if __name__ == "__main__":
             topReddit(query)
         elif "add"==query[:3]:
             addList(query)
+        elif "remove"==query[:6]:
+            removeList(query)
         elif query=="exit":   
             exit()
         else:
