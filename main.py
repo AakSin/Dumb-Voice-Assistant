@@ -32,8 +32,8 @@ hour=str(datetime.datetime.now().hour)
 minute=str(datetime.datetime.now().minute)
 
 ############################################ my functions
-
-
+lists={"shopping list":[],"wishlist":[]}
+l_lists=list(lists.keys())
 def speak(inp):
     engine.say(inp)
     engine.runAndWait() #blocks pyttsx waale functions till previous functions are complete
@@ -81,6 +81,7 @@ def search_google(query):
         speak(res.text)
     except:
         pass
+    
 def play_youtube(query):
     query=query.replace("youtube ","")
     browser = webdriver.Chrome(ChromeDriverManager().install())
@@ -98,7 +99,16 @@ def topReddit(query):
     query=query.replace(" ","")
     browser = webdriver.Chrome(ChromeDriverManager().install())
     browser.get(f"https://www.reddit.com/r/{query}/top/?t=week")
-
+def addList(query):
+    query=query.replace("add ","")
+    query=query.replace(" to","")
+    if query[-13::]==l_lists[0]:
+        query=query.replace(l_lists[0],"")
+        lists[l_lists[0]].append(query)
+        print(lists)
+    else:
+        print("error")
+        
 ##################################### Actual Program
 
 if __name__ == "__main__":
@@ -106,12 +116,19 @@ if __name__ == "__main__":
     #intro()
     while True:    
         query=listenTo().lower()
+        #query=input()
         if "google"==query[:6]:
             search_google(query)
-        if "youtube"==query[:7]:
+        elif "youtube"==query[:7]:
             play_youtube(query)
-        if "reddit"==query[:6]:
+        elif "reddit"==query[:6]:
             topReddit(query)
-        if query=="exit":   
+        elif "add"==query[:3]:
+            addList(query)
+        elif query=="exit":   
             exit()
+        else:
+            er="No command has been set for that"
+            print(er)
+            speak(er)
         os.system("pause")
